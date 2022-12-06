@@ -8,8 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdatePaymentRequest {
-    private String cardNumber;
-    private String fullName;
-    private String cardCvv;
     private double balance;
 }

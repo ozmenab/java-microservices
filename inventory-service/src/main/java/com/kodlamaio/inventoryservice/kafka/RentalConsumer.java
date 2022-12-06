@@ -22,7 +22,7 @@ public class RentalConsumer {
     public void consume(RentalCreatedEvent createdEvent){
         LOGGER.info(String.format("Order event received in stock service => %s", createdEvent.toString()));
         carService.changeCarState(createdEvent.getCarId(),2);
-        LOGGER.info("Car state ");
+        LOGGER.info("Car rented");
         // save the order event into the database
     }
 
@@ -32,7 +32,7 @@ public class RentalConsumer {
     )
     public void consume(RentalUpdatedEvent rentalUpdatedEvent){
         LOGGER.info(String.format("Order event received in stock service => %s", rentalUpdatedEvent.toString()));
-        LOGGER.info("Car state ");
+        LOGGER.info("Car state changed");
         carService.changeCarState(rentalUpdatedEvent.getNewCarId(),2);
         carService.changeCarState(rentalUpdatedEvent.getOldCarId(),1);
         // save the order event into the database

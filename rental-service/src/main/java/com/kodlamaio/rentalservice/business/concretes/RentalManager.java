@@ -35,11 +35,12 @@ public class RentalManager implements RentalService {
     private RentalProducer rentalProducer;
     private InventoryService inventoryService;
     private PaymentService paymentService;
+
     @Override
     public List<GetAllRentalsResponse> getAll() {
         List<Rental> rentals = rentalRepository.findAll();
         List<GetAllRentalsResponse> response = rentals
-                .stream().map(rental -> modelMapperService.forResponse().map(rental,GetAllRentalsResponse.class))
+                .stream().map(rental -> modelMapperService.forResponse().map(rental, GetAllRentalsResponse.class))
                 .collect(Collectors.toList());
         return response;
     }
@@ -52,17 +53,20 @@ public class RentalManager implements RentalService {
     @Override
     public CreateRentalResponse add(CreateRentalRequest createRentalRequest, CreatePaymentRequest paymentRequest) {
         checkIfCarAvialible(createRentalRequest.getCarId());
-        Rental rental = modelMapperService.forRequest().map(createRentalRequest,Rental.class);
+        Rental rental = modelMapperService.forRequest().map(createRentalRequest, Rental.class);
         rental.setId(UUID.randomUUID().toString());
-        double price = rental.getDailyPrice()*rental.getRentedForDays();
+        rental.setTotalPrice(rental.getDailyPrice() * rental.getRentedForDays());
+
         paymentService.checkIfPaymentSuccessful(paymentRequest.getCardNumber(),
-                paymentRequest.getFullName(), paymentRequest.getCardCvv(),price);
+                paymentRequest.getFullName(), paymentRequest.getCardCvv(), rental.getTotalPrice());
+
         Rental rentalCreated = rentalRepository.save(rental);
         RentalCreatedEvent rentalCreatedEvent = new RentalCreatedEvent();
         rentalCreatedEvent.setCarId(rentalCreated.getCarId());
         rentalCreatedEvent.setMessage("Rental Created");
         rentalProducer.sendMessage(rentalCreatedEvent);
-        CreateRentalResponse response = modelMapperService.forResponse().map(rental,CreateRentalResponse.class);
+
+        CreateRentalResponse response = modelMapperService.forResponse().map(rental, CreateRentalResponse.class);
         return response;
     }
 
@@ -86,15 +90,16 @@ public class RentalManager implements RentalService {
     public void delete(String id) {
 
     }
+
     private void checkIfCarAvialible(String carId) {
         GetCarResponse carResponse = inventoryService.chekIfCarAvialible(carId);
-        if(carResponse.getState()!=1)
+        if (carResponse.getState() != 1)
             throw new BusinessException("Car no avialible");
     }
 
-    private Rental checkIfRentalExistsById(String id){
+    private Rental checkIfRentalExistsById(String id) {
         Rental rental = rentalRepository.findById(id)
-                .orElseThrow(()->new BusinessException("Rental no exists"));
+                .orElseThrow(() -> new BusinessException("Rental no exists"));
         return rental;
     }
 }

@@ -15,5 +15,4 @@ public class CreateRentalRequest {
     private String carId;
     private int rentedForDays;
     private double dailyPrice;
-    private double totalPrice;
 }

@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @AllArgsConstructor
 public class CarFilterConsumer {
@@ -24,6 +26,7 @@ public class CarFilterConsumer {
     )
     public void consume(CarCreatedEvent event) {
         CarFilter carFilter = modelMapperService.forRequest().map(event, CarFilter.class);
+        carFilter.setId(UUID.randomUUID().toString());
         carFilterService.save(carFilter);
         LOGGER.info("Inventory created event consumed: {}", event);
     }
@@ -37,6 +40,6 @@ public class CarFilterConsumer {
         String id = carFilterService.getByCarId(event.getCarId()).getId();
         filter.setId(id);
         carFilterService.save(filter);
-        LOGGER.info("Car updated event consumed: {}", event);
+        LOGGER.info("Inventory updated event consumed: {}", event);
     }
 }
