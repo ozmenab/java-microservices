@@ -1,0 +1,126 @@
+package com.kodlamaio.inventoryservice.business.concretes;
+
+import com.kodlamaio.common.events.filterservice.CarCreatedEvent;
+import com.kodlamaio.common.events.filterservice.CarUpdateEvent;
+import com.kodlamaio.common.util.exceptions.BusinessException;
+import com.kodlamaio.common.util.mapping.ModelMapperService;
+import com.kodlamaio.inventoryservice.business.abstracts.CarService;
+import com.kodlamaio.inventoryservice.business.dto.responses.create.CreateCarResponse;
+import com.kodlamaio.inventoryservice.business.dto.responses.get.GetAllCarsResponse;
+import com.kodlamaio.inventoryservice.business.dto.responses.get.GetCarResponse;
+import com.kodlamaio.inventoryservice.business.dto.responses.update.UpdateCarResponse;
+import com.kodlamaio.inventoryservice.entities.Car;
+import com.kodlamaio.inventoryservice.business.dto.requests.create.CreateCarRequest;
+import com.kodlamaio.inventoryservice.business.dto.requests.update.UpdateCarRequest;
+import com.kodlamaio.inventoryservice.kafka.FilterServiceProducer;
+import com.kodlamaio.inventoryservice.repository.CarRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
+
+@Service
+@AllArgsConstructor
+public class CarManager implements CarService {
+    private final CarRepository carRepository;
+    private final ModelMapperService modelMapperService;
+    private FilterServiceProducer filterServiceProducer;
+
+    @Override
+    public List<GetAllCarsResponse> getAll() {
+        List<Car> cars = carRepository.findAll();
+        List<GetAllCarsResponse> response = cars
+                .stream()
+                .map(car -> modelMapperService.forResponse().map(car, GetAllCarsResponse.class))
+                .toList();
+
+        return response;
+    }
+
+    @Override
+    public GetCarResponse getById(String id) {
+        checkIfCarExistsById(id);
+        Car car = carRepository.findById(id).orElseThrow();
+        GetCarResponse response = modelMapperService.forResponse().map(car, GetCarResponse.class);
+
+        return response;
+    }
+
+    @Override
+    public CreateCarResponse add(CreateCarRequest request) {
+        checkIfCarExistsByPlate(request.getPlate());
+        Car car = modelMapperService.forRequest().map(request, Car.class);
+        car.setId(UUID.randomUUID().toString());
+        carRepository.save(car);
+        CreateCarResponse response = modelMapperService.forResponse().map(car, CreateCarResponse.class);
+        addToFilterService(response.getId());
+        return response;
+    }
+
+    @Override
+    public UpdateCarResponse update(UpdateCarRequest updateCarRequest, String id) {
+        checkIfCarExistsById(id);
+        checkIfCarExistsByPlate(updateCarRequest.getPlate());
+        Car car = modelMapperService.forRequest().map(updateCarRequest, Car.class);
+        car.setId(id);
+        carRepository.save(car);
+        UpdateCarResponse response = modelMapperService.forResponse().map(car, UpdateCarResponse.class);
+        updateToFilterService(updateCarRequest,id);
+        return response;
+    }
+
+    @Override
+    public void delete(String id) {
+        checkIfCarExistsById(id);
+        carRepository.deleteById(id);
+    }
+
+    @Override
+    public void changeCarState(String id, int state) {
+        carRepository.setCarStateById(id,state);
+    }
+
+    @Override
+    public void carAvialibleState(String carId) {
+        checkIfCarAvialible(carId);
+    }
+
+    private void checkIfCarExistsById(String id) {
+        if (!carRepository.existsById(id)) {
+            throw new BusinessException("CAR.NOT_EXISTS");
+        }
+    }
+
+    private void checkIfCarExistsByPlate(String plate) {
+        if (carRepository.existsByPlateIgnoreCase(plate)) {
+            throw new BusinessException("CAR.ALREADY_EXISTS");
+        }
+    }
+
+    private void checkIfCarAvialible(String carId){
+        Car car = carRepository.findById(carId).orElse(null);
+        if(car == null || car.getState() != 1)
+            throw new BusinessException("Car no exists or car no avialible");
+    }
+
+    private void addToFilterService(String id) {
+        Car car = carRepository.findById(id).get();
+        CarCreatedEvent event = modelMapperService.forResponse().map(car,CarCreatedEvent.class);
+        event.setMessage("car added");
+        filterServiceProducer.sendMessage(event);
+    }
+
+    private void updateToFilterService(UpdateCarRequest updateCarRequest, String id) {
+        Car car = carRepository.findById(id).orElseThrow();
+        car.getModel().setId(updateCarRequest.getModelId());
+        car.getModel().getBrand().setId(car.getModel().getBrand().getId());
+        car.setState(updateCarRequest.getState());
+        car.setPlate(updateCarRequest.getPlate());
+        car.setModelYear(updateCarRequest.getModelYear());
+        car.setDailyPrice(updateCarRequest.getDailyPrice());
+        CarUpdateEvent event = modelMapperService.forResponse().map(car,CarUpdateEvent.class);
+        filterServiceProducer.sendMessage(event);
+    }
+}
+
