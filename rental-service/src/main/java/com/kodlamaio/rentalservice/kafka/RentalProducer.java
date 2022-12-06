@@ -1,5 +1,6 @@
 package com.kodlamaio.rentalservice.kafka;
 
+import com.kodlamaio.common.events.rental.InvoiceCreateEvent;
 import com.kodlamaio.common.events.rental.RentalCreatedEvent;
 import com.kodlamaio.common.events.rental.RentalUpdatedEvent;
 import org.apache.kafka.clients.admin.NewTopic;
@@ -36,6 +37,16 @@ public class RentalProducer {
 
         Message<RentalUpdatedEvent> message = MessageBuilder
                 .withPayload(rentalUpdatedEvent)
+                .setHeader(KafkaHeaders.TOPIC, topic.name()).build();
+
+        kafkaTemplate.send(message);
+    }
+
+    public void sendMessage(InvoiceCreateEvent invoiceCreateEvent) {
+        LOGGER.info(String.format("Rental invoice event => %s", invoiceCreateEvent.toString()));
+
+        Message<InvoiceCreateEvent> message = MessageBuilder
+                .withPayload(invoiceCreateEvent)
                 .setHeader(KafkaHeaders.TOPIC, topic.name()).build();
 
         kafkaTemplate.send(message);

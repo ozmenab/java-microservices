@@ -8,6 +8,7 @@
     <mapping directory="$PROJECT_DIR$/discovery-server" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/filter-service" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/inventory-service" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/invoice-service" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/payment-service" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/rental-service" vcs="Git" />
   </component>

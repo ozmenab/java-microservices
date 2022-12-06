@@ -1,5 +1,6 @@
 package com.kodlamaio.rentalservice.business.concretes;
 
+import com.kodlamaio.common.events.rental.InvoiceCreateEvent;
 import com.kodlamaio.common.events.rental.RentalUpdatedEvent;
 import com.kodlamaio.paymentservice.business.requests.CreatePaymentRequest;
 import com.kodlamaio.rentalservice.business.abstracts.RentalService;
@@ -20,7 +21,6 @@ import com.kodlamaio.common.util.mapping.ModelMapperService;
 import com.kodlamaio.inventoryservice.business.dto.responses.get.GetCarResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 import java.util.List;
@@ -66,9 +66,12 @@ public class RentalManager implements RentalService {
         rentalCreatedEvent.setMessage("Rental Created");
         rentalProducer.sendMessage(rentalCreatedEvent);
 
+        createInvoiceProducer(rental,paymentRequest);
+
         CreateRentalResponse response = modelMapperService.forResponse().map(rental, CreateRentalResponse.class);
         return response;
     }
+
 
     @Override
     public UpdateRentalResponse update(String id, UpdateRentalRequest updateRentalRequest) {
@@ -89,6 +92,18 @@ public class RentalManager implements RentalService {
     @Override
     public void delete(String id) {
 
+    }
+
+    private void createInvoiceProducer(Rental rental, CreatePaymentRequest paymentRequest) {
+        InvoiceCreateEvent invoiceCreateEvent = new InvoiceCreateEvent();
+        GetCarResponse car = inventoryService.chekIfCarAvialible(rental.getCarId());
+        invoiceCreateEvent.setBrandName(car.getBrandName());
+        invoiceCreateEvent.setModelName(car.getModelName());
+        invoiceCreateEvent.setTotalPrice(rental.getTotalPrice());
+        invoiceCreateEvent.setFullName(paymentRequest.getFullName());
+        invoiceCreateEvent.setDailyPrice(rental.getDailyPrice());
+        invoiceCreateEvent.setRentedForDays(rental.getRentedForDays());
+        rentalProducer.sendMessage(invoiceCreateEvent);
     }
 
     private void checkIfCarAvialible(String carId) {

@@ -13,6 +13,7 @@
         <module name="inventory-service" />
         <module name="payment-service" />
         <module name="common" />
+        <module name="invoice-service" />
         <module name="rental-service" />
         <module name="filter-service" />
       </profile>
@@ -24,6 +25,7 @@
       <module name="discovery-server" target="17" />
       <module name="filter-service" target="17" />
       <module name="inventory-service" target="17" />
+      <module name="invoice-service" target="17" />
       <module name="payment-service" target="17" />
       <module name="rental-service" target="17" />
     </bytecodeTargetLevel>
@@ -36,6 +38,7 @@
       <module name="discovery-server" options="-parameters" />
       <module name="filter-service" options="-parameters" />
       <module name="inventory-service" options="-parameters" />
+      <module name="invoice-service" options="-parameters" />
       <module name="payment-service" options="-parameters" />
       <module name="rental-service" options="-parameters" />
     </option>
