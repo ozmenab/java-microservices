@@ -1,7 +1,7 @@
 package com.kodlamaio.inventoryservice.business.concretes;
 
-import com.kodlamaio.common.events.filterservice.CarCreatedEvent;
-import com.kodlamaio.common.events.filterservice.CarUpdateEvent;
+import com.kodlamaio.common.events.filterService.CarCreatedEvent;
+import com.kodlamaio.common.events.filterService.CarUpdateEvent;
 import com.kodlamaio.common.util.exceptions.BusinessException;
 import com.kodlamaio.common.util.mapping.ModelMapperService;
 import com.kodlamaio.inventoryservice.business.abstracts.CarService;
@@ -60,13 +60,13 @@ public class CarManager implements CarService {
 
     @Override
     public UpdateCarResponse update(UpdateCarRequest updateCarRequest, String id) {
-        checkIfCarExistsById(id);
-        checkIfCarExistsByPlate(updateCarRequest.getPlate());
-        Car car = modelMapperService.forRequest().map(updateCarRequest, Car.class);
-        car.setId(id);
-        carRepository.save(car);
+        Car car = checkIfCarExistsById(id);
+        Car updatedCar = modelMapperService.forRequest().map(updateCarRequest, Car.class);
+        updatedCar.setId(id);
+        updatedCar.setState(car.getState());
+        carRepository.save(updatedCar);
         UpdateCarResponse response = modelMapperService.forResponse().map(car, UpdateCarResponse.class);
-        updateToFilterService(updateCarRequest,id);
+        updateToFilterService(id,updateCarRequest);
         return response;
     }
 
@@ -86,10 +86,12 @@ public class CarManager implements CarService {
         checkIfCarAvialible(carId);
     }
 
-    private void checkIfCarExistsById(String id) {
-        if (!carRepository.existsById(id)) {
+    private Car checkIfCarExistsById(String id) {
+        Car car = carRepository.findById(id).orElse(null);
+        if (car==null) {
             throw new BusinessException("CAR.NOT_EXISTS");
         }
+        return car;
     }
 
     private void checkIfCarExistsByPlate(String plate) {
@@ -111,7 +113,7 @@ public class CarManager implements CarService {
         filterServiceProducer.sendMessage(event);
     }
 
-    private void updateToFilterService(UpdateCarRequest updateCarRequest, String id) {
+    private void updateToFilterService(String id,UpdateCarRequest updateCarRequest) {
         Car car = carRepository.findById(id).orElseThrow();
         car.getModel().setId(updateCarRequest.getModelId());
         car.getModel().getBrand().setId(car.getModel().getBrand().getId());

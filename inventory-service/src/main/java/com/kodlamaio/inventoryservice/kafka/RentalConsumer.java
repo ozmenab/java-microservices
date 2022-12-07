@@ -1,7 +1,7 @@
 package com.kodlamaio.inventoryservice.kafka;
 
-import com.kodlamaio.common.events.rental.RentalCreatedEvent;
-import com.kodlamaio.common.events.rental.RentalUpdatedEvent;
+import com.kodlamaio.common.events.rentalService.RentalCreatedEvent;
+import com.kodlamaio.common.events.rentalService.RentalUpdatedEvent;
 import com.kodlamaio.inventoryservice.business.abstracts.CarService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;

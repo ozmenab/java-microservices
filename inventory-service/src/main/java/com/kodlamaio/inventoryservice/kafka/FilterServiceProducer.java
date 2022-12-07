@@ -1,7 +1,7 @@
 package com.kodlamaio.inventoryservice.kafka;
 
-import com.kodlamaio.common.events.filterservice.CarCreatedEvent;
-import com.kodlamaio.common.events.filterservice.CarUpdateEvent;
+import com.kodlamaio.common.events.filterService.CarCreatedEvent;
+import com.kodlamaio.common.events.filterService.CarUpdateEvent;
 import lombok.AllArgsConstructor;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.slf4j.Logger;

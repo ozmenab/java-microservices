@@ -1,4 +1,4 @@
-package com.kodlamaio.common.events.filterservice;
+package com.kodlamaio.common.events.filterService;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,7 +1,7 @@
 package com.kodlamaio.filterservice.kafka;
 
-import com.kodlamaio.common.events.filterservice.CarCreatedEvent;
-import com.kodlamaio.common.events.filterservice.CarUpdateEvent;
+import com.kodlamaio.common.events.filterService.CarCreatedEvent;
+import com.kodlamaio.common.events.filterService.CarUpdateEvent;
 import com.kodlamaio.common.util.mapping.ModelMapperService;
 import com.kodlamaio.filterservice.business.abstracts.CarFilterService;
 import com.kodlamaio.filterservice.entities.CarFilter;
@@ -26,7 +26,6 @@ public class CarFilterConsumer {
     )
     public void consume(CarCreatedEvent event) {
         CarFilter carFilter = modelMapperService.forRequest().map(event, CarFilter.class);
-        carFilter.setId(UUID.randomUUID().toString());
         carFilterService.save(carFilter);
         LOGGER.info("Inventory created event consumed: {}", event);
     }

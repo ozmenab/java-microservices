@@ -50,7 +50,6 @@ public class BrandManager implements BrandService {
         brand.setId(UUID.randomUUID().toString());
         repository.save(brand);
         CreateBrandResponse response = mapper.forResponse().map(brand, CreateBrandResponse.class);
-
         return response;
     }
 

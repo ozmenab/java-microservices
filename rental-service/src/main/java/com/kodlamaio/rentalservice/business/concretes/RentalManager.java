@@ -1,7 +1,7 @@
 package com.kodlamaio.rentalservice.business.concretes;
 
-import com.kodlamaio.common.events.rental.InvoiceCreateEvent;
-import com.kodlamaio.common.events.rental.RentalUpdatedEvent;
+import com.kodlamaio.common.events.rentalService.InvoiceCreateEvent;
+import com.kodlamaio.common.events.rentalService.RentalUpdatedEvent;
 import com.kodlamaio.paymentservice.business.requests.CreatePaymentRequest;
 import com.kodlamaio.rentalservice.business.abstracts.RentalService;
 import com.kodlamaio.rentalservice.business.requests.create.CreateRentalRequest;
@@ -15,7 +15,7 @@ import com.kodlamaio.rentalservice.config.feign.PaymentService;
 import com.kodlamaio.rentalservice.dataAccess.abstracts.RentalRepository;
 import com.kodlamaio.rentalservice.entities.Rental;
 import com.kodlamaio.rentalservice.kafka.RentalProducer;
-import com.kodlamaio.common.events.rental.RentalCreatedEvent;
+import com.kodlamaio.common.events.rentalService.RentalCreatedEvent;
 import com.kodlamaio.common.util.exceptions.BusinessException;
 import com.kodlamaio.common.util.mapping.ModelMapperService;
 import com.kodlamaio.inventoryservice.business.dto.responses.get.GetCarResponse;
@@ -96,7 +96,7 @@ public class RentalManager implements RentalService {
 
     private void createInvoiceProducer(Rental rental, CreatePaymentRequest paymentRequest) {
         InvoiceCreateEvent invoiceCreateEvent = new InvoiceCreateEvent();
-        GetCarResponse car = inventoryService.chekIfCarAvialible(rental.getCarId());
+        GetCarResponse car = inventoryService.getCarById(rental.getCarId());
         invoiceCreateEvent.setBrandName(car.getBrandName());
         invoiceCreateEvent.setModelName(car.getModelName());
         invoiceCreateEvent.setTotalPrice(rental.getTotalPrice());
@@ -107,7 +107,7 @@ public class RentalManager implements RentalService {
     }
 
     private void checkIfCarAvialible(String carId) {
-        GetCarResponse carResponse = inventoryService.chekIfCarAvialible(carId);
+        GetCarResponse carResponse = inventoryService.getCarById(carId);
         if (carResponse.getState() != 1)
             throw new BusinessException("Car no avialible");
     }

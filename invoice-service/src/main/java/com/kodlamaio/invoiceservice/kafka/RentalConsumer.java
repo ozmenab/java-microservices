@@ -1,6 +1,6 @@
 package com.kodlamaio.invoiceservice.kafka;
 
-import com.kodlamaio.common.events.rental.InvoiceCreateEvent;
+import com.kodlamaio.common.events.rentalService.InvoiceCreateEvent;
 import com.kodlamaio.common.util.mapping.ModelMapperService;
 import com.kodlamaio.invoiceservice.business.abstracts.InvoiceService;
 import com.kodlamaio.invoiceservice.entities.Invoice;

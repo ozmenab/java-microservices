@@ -12,5 +12,5 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public interface InventoryService {
     @RequestMapping(method = RequestMethod.GET,value = "/api/v1/cars/{carId}")
     @Headers(value = "Content-Type: application/json")
-    GetCarResponse chekIfCarAvialible(@PathVariable String carId);
+    GetCarResponse getCarById(@PathVariable String carId);
 }

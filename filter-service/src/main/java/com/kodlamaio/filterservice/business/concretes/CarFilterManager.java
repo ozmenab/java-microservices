@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,6 +20,7 @@ public class CarFilterManager implements CarFilterService {
 
     @Override
     public void save(CarFilter carFilter) {
+        carFilter.setId(UUID.randomUUID().toString());
         carFilterRepository.save(carFilter);
     }
 
