@@ -1,5 +1,6 @@
 package com.kodlamaio.filterservice.business.concretes;
 
+import com.kodlamaio.common.events.filterService.CarCreatedEvent;
 import com.kodlamaio.common.util.mapping.ModelMapperService;
 import com.kodlamaio.filterservice.business.abstracts.CarFilterService;
 import com.kodlamaio.filterservice.business.responses.GetAllCarFiltersResponse;
@@ -76,5 +77,11 @@ public class CarFilterManager implements CarFilterService {
     @Override
     public void deleteByCarId(String id) {
         carFilterRepository.deleteByCarId(id);
+    }
+
+    @Override
+    public List<CarFilter> getByBrandNameOrModelName(String name) {
+        List<CarFilter> filters = carFilterRepository.findAllByModelNameIgnoreCaseOrBrandNameIgnoreCase(name);
+        return filters;
     }
 }

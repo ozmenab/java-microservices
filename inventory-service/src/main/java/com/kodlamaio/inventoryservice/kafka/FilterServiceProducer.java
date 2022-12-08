@@ -19,7 +19,7 @@ public class FilterServiceProducer {
 
     private final NewTopic topic;
 
-    private final KafkaTemplate<String, CarCreatedEvent> kafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     public void sendMessage(CarCreatedEvent event) {
         LOGGER.info(String.format("Car created event for filter-service => %s", event.toString()));

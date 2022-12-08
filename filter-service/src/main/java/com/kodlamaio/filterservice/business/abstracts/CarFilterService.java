@@ -15,4 +15,5 @@ public interface CarFilterService {
     List<CarFilter> getByModelId(String modelId);
     List<CarFilter> getByBrandId(String brandId);
     void deleteByCarId(String id);
+    List<CarFilter> getByBrandNameOrModelName(String name);
 }

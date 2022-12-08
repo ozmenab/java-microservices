@@ -109,7 +109,6 @@ public class CarManager implements CarService {
     private void addToFilterService(String id) {
         Car car = carRepository.findById(id).get();
         CarCreatedEvent event = modelMapperService.forResponse().map(car,CarCreatedEvent.class);
-        event.setMessage("car added");
         filterServiceProducer.sendMessage(event);
     }
 

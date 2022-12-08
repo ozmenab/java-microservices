@@ -25,7 +25,6 @@ public class BrandsController {
     }
 
     @PostMapping
-    @ResponseStatus(value = HttpStatus.CREATED)
     public CreateBrandResponse add(@RequestBody CreateBrandRequest request) {
         return service.add(request);
     }
@@ -36,7 +35,6 @@ public class BrandsController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable String id) {
         service.delete(id);
     }

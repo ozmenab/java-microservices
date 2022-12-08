@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
 public class RentalProducer {
     private static final Logger LOGGER = LoggerFactory.getLogger(RentalProducer.class);
     private NewTopic topic;
-    private KafkaTemplate<String, RentalCreatedEvent> kafkaTemplate;
+    private KafkaTemplate<String, Object> kafkaTemplate;
 
-    public RentalProducer(NewTopic topic, KafkaTemplate<String, RentalCreatedEvent> kafkaTemplate) {
+    public RentalProducer(NewTopic topic, KafkaTemplate<String, Object> kafkaTemplate) {
         this.topic = topic;
         this.kafkaTemplate = kafkaTemplate;
     }

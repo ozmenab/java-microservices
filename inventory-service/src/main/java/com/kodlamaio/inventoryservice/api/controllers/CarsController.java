@@ -25,7 +25,6 @@ public class CarsController {
     }
 
     @PostMapping
-    @ResponseStatus(value = HttpStatus.CREATED)
     public CreateCarResponse add(@RequestBody CreateCarRequest request) {
         return service.add(request);
     }
@@ -36,7 +35,6 @@ public class CarsController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable String id) {
         service.delete(id);
     }

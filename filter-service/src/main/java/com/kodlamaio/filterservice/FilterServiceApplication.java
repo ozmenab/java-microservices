@@ -26,9 +26,5 @@ public class FilterServiceApplication {
     public ModelMapperService getModelMapperService(ModelMapper mapper) {
         return new ModelMapperManager(mapper);
     }
-    @Bean
-    public StringJsonMessageConverter jsonConverter() {
-        return new StringJsonMessageConverter();
-    }
 
 }
