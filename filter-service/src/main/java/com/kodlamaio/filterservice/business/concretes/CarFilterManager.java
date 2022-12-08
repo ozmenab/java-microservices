@@ -21,7 +21,6 @@ public class CarFilterManager implements CarFilterService {
 
     @Override
     public void save(CarFilter carFilter) {
-        carFilter.setId(UUID.randomUUID().toString());
         carFilterRepository.save(carFilter);
     }
 
@@ -71,7 +70,7 @@ public class CarFilterManager implements CarFilterService {
 
     @Override
     public List<CarFilter> getByBrandId(String brandId) {
-        return carFilterRepository.findAllByModelId(brandId);
+        return carFilterRepository.findAllByBrandId(brandId);
     }
 
     @Override

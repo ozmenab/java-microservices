@@ -1,5 +1,6 @@
 package com.kodlamaio.inventoryservice.business.concretes;
 
+import com.kodlamaio.common.events.filterService.BrandUpdatedEvent;
 import com.kodlamaio.common.util.exceptions.BusinessException;
 import com.kodlamaio.common.util.mapping.ModelMapperService;
 import com.kodlamaio.inventoryservice.business.abstracts.BrandService;
@@ -8,6 +9,7 @@ import com.kodlamaio.inventoryservice.business.dto.responses.get.GetAllBrandsRes
 import com.kodlamaio.inventoryservice.business.dto.responses.get.GetBrandResponse;
 import com.kodlamaio.inventoryservice.business.dto.responses.update.UpdateBrandResponse;
 import com.kodlamaio.inventoryservice.entities.Brand;
+import com.kodlamaio.inventoryservice.kafka.FilterServiceProducer;
 import com.kodlamaio.inventoryservice.repository.BrandRepository;
 import com.kodlamaio.inventoryservice.business.dto.requests.create.CreateBrandRequest;
 import com.kodlamaio.inventoryservice.business.dto.requests.update.UpdateBrandRequest;
@@ -22,6 +24,7 @@ import java.util.UUID;
 public class BrandManager implements BrandService {
     private final BrandRepository repository;
     private final ModelMapperService mapper;
+    private FilterServiceProducer filterServiceProducer;
 
     @Override
     public List<GetAllBrandsResponse> getAll() {
@@ -60,7 +63,7 @@ public class BrandManager implements BrandService {
         brand.setId(id);
         repository.save(brand);
         UpdateBrandResponse response = mapper.forResponse().map(brand, UpdateBrandResponse.class);
-
+        updateToFilterServiceBrandName(response.getId(),response.getName());
         return response;
     }
 
@@ -80,5 +83,11 @@ public class BrandManager implements BrandService {
         if (!repository.existsById(id)) {
             throw new BusinessException("BRAND.NOT.EXISTS");
         }
+    }
+    private void updateToFilterServiceBrandName(String id, String name) {
+        BrandUpdatedEvent event = new BrandUpdatedEvent();
+        event.setId(id);
+        event.setName(name);
+        filterServiceProducer.sendMessage(event);
     }
 }
