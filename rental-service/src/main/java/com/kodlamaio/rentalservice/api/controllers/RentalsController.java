@@ -1,6 +1,6 @@
 package com.kodlamaio.rentalservice.api.controllers;
 
-import com.kodlamaio.paymentservice.business.requests.CreatePaymentRequest;
+import com.kodlamaio.common.dto.CreatePaymentRequest;
 import com.kodlamaio.rentalservice.business.abstracts.RentalService;
 import com.kodlamaio.rentalservice.business.requests.create.CreateRentalRequest;
 import com.kodlamaio.rentalservice.business.requests.update.UpdateRentalRequest;

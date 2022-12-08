@@ -1,8 +1,9 @@
 package com.kodlamaio.rentalservice.business.concretes;
 
+import com.kodlamaio.common.dto.CreatePaymentRequest;
+import com.kodlamaio.common.dto.GetCarResponseDto;
 import com.kodlamaio.common.events.rentalService.InvoiceCreateEvent;
 import com.kodlamaio.common.events.rentalService.RentalUpdatedEvent;
-import com.kodlamaio.paymentservice.business.requests.CreatePaymentRequest;
 import com.kodlamaio.rentalservice.business.abstracts.RentalService;
 import com.kodlamaio.rentalservice.business.requests.create.CreateRentalRequest;
 import com.kodlamaio.rentalservice.business.requests.update.UpdateRentalRequest;
@@ -18,7 +19,6 @@ import com.kodlamaio.rentalservice.kafka.RentalProducer;
 import com.kodlamaio.common.events.rentalService.RentalCreatedEvent;
 import com.kodlamaio.common.util.exceptions.BusinessException;
 import com.kodlamaio.common.util.mapping.ModelMapperService;
-import com.kodlamaio.inventoryservice.business.dto.responses.get.GetCarResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -96,7 +96,7 @@ public class RentalManager implements RentalService {
 
     private void createInvoiceProducer(Rental rental, CreatePaymentRequest paymentRequest) {
         InvoiceCreateEvent invoiceCreateEvent = new InvoiceCreateEvent();
-        GetCarResponse car = inventoryService.getCarById(rental.getCarId());
+        GetCarResponseDto car = inventoryService.getCarById(rental.getCarId());
         invoiceCreateEvent.setBrandName(car.getBrandName());
         invoiceCreateEvent.setModelName(car.getModelName());
         invoiceCreateEvent.setTotalPrice(rental.getTotalPrice());
@@ -107,7 +107,7 @@ public class RentalManager implements RentalService {
     }
 
     private void checkIfCarAvialible(String carId) {
-        GetCarResponse carResponse = inventoryService.getCarById(carId);
+        GetCarResponseDto carResponse = inventoryService.getCarById(carId);
         if (carResponse.getState() != 1)
             throw new BusinessException("Car no avialible");
     }

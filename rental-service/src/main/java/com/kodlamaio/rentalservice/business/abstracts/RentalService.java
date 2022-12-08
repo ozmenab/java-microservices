@@ -1,6 +1,7 @@
 package com.kodlamaio.rentalservice.business.abstracts;
 
-import com.kodlamaio.paymentservice.business.requests.CreatePaymentRequest;
+
+import com.kodlamaio.common.dto.CreatePaymentRequest;
 import com.kodlamaio.rentalservice.business.requests.create.CreateRentalRequest;
 import com.kodlamaio.rentalservice.business.requests.update.UpdateRentalRequest;
 import com.kodlamaio.rentalservice.business.responses.create.CreateRentalResponse;

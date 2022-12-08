@@ -1,5 +1,6 @@
 package com.kodlamaio.inventoryservice.business.concretes;
 
+import com.kodlamaio.common.dto.GetCarResponseDto;
 import com.kodlamaio.common.events.filterService.CarCreatedEvent;
 import com.kodlamaio.common.events.filterService.CarUpdateEvent;
 import com.kodlamaio.common.util.exceptions.BusinessException;
@@ -39,11 +40,10 @@ public class CarManager implements CarService {
     }
 
     @Override
-    public GetCarResponse getById(String id) {
+    public GetCarResponseDto getById(String id) {
         checkIfCarExistsById(id);
         Car car = carRepository.findById(id).orElseThrow();
-        GetCarResponse response = modelMapperService.forResponse().map(car, GetCarResponse.class);
-
+        GetCarResponseDto response = modelMapperService.forResponse().map(car, GetCarResponseDto.class);
         return response;
     }
 

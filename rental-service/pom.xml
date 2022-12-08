@@ -86,13 +86,7 @@
         </dependency>
         <dependency>
             <groupId>com.kodlamaio</groupId>
-            <artifactId>inventoryservice</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.kodlamaio</groupId>
-            <artifactId>payment-service</artifactId>
+            <artifactId>common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

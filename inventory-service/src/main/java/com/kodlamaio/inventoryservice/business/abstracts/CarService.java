@@ -1,5 +1,6 @@
 package com.kodlamaio.inventoryservice.business.abstracts;
 
+import com.kodlamaio.common.dto.GetCarResponseDto;
 import com.kodlamaio.inventoryservice.business.dto.responses.create.CreateCarResponse;
 import com.kodlamaio.inventoryservice.business.dto.responses.get.GetAllCarsResponse;
 import com.kodlamaio.inventoryservice.business.dto.responses.get.GetCarResponse;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public interface CarService {
     List<GetAllCarsResponse> getAll();
-    GetCarResponse getById(String id);
+    GetCarResponseDto getById(String id);
     CreateCarResponse add(CreateCarRequest request);
     UpdateCarResponse update(UpdateCarRequest request, String id);
     void delete(String id);

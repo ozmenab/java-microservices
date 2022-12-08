@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fcadfd69-6b6d-4051-8b43-c66f28aa2e99" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +26,9 @@
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenRunner">
+    <option name="skipTests" value="true" />
   </component>
   <component name="ProjectId" id="2IVkr6A4G6ZqQj0kRWkKZbojLzX" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -47,12 +50,13 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "jdk.selected.JAVA_MODULE": "18",
-    "last_opened_file_path": "C:/çasgem2/microservices/common",
+    "last_opened_file_path": "C:/çasgem2/microservices",
+    "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.Color Scheme Font",
-    "spring.configuration.checksum": "e77b9ec8f23b8a895877b603bd48ca25"
+    "spring.configuration.checksum": "6075985ea7a5ccee950b623955bb5a60"
   },
   "keyToStringList": {
     "DatabaseDriversLRU": [
@@ -81,10 +85,17 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.InvoiceServiceApplication">
+  <component name="RunManager" selected="Spring Boot.CommonApplication">
     <configuration name="ApigatewayApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="apigateway" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.kodlamaio.apigateway.ApigatewayApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CommonApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="common" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.kodlamaio.common.CommonApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -147,6 +158,7 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Spring Boot.CommonApplication" />
       <item itemvalue="Spring Boot.ConfigServerApplication" />
       <item itemvalue="Spring Boot.DiscoveryServerApplication" />
       <item itemvalue="Spring Boot.ApigatewayApplication" />
@@ -172,7 +184,8 @@
       <workItem from="1670395808250" duration="12536000" />
       <workItem from="1670440650829" duration="4725000" />
       <workItem from="1670449488053" duration="965000" />
-      <workItem from="1670482501055" duration="9507000" />
+      <workItem from="1670482501055" duration="18148000" />
+      <workItem from="1670524011387" duration="1150000" />
     </task>
     <servers />
   </component>

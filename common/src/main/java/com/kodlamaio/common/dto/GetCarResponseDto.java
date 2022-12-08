@@ -1,11 +1,13 @@
-package com.kodlamaio.inventoryservice.business.dto.responses.get;
+package com.kodlamaio.common.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class GetCarResponse {
+@NoArgsConstructor
+public class GetCarResponseDto {
     private String id;
     private double dailyPrice;
     private int modelYear;

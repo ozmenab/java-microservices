@@ -1,5 +1,6 @@
 package com.kodlamaio.inventoryservice.api.controllers;
 
+import com.kodlamaio.common.dto.GetCarResponseDto;
 import com.kodlamaio.inventoryservice.business.abstracts.CarService;
 import com.kodlamaio.inventoryservice.business.dto.responses.create.CreateCarResponse;
 import com.kodlamaio.inventoryservice.business.dto.responses.get.GetAllCarsResponse;
@@ -40,7 +41,7 @@ public class CarsController {
     }
 
     @GetMapping("/{id}")
-    public GetCarResponse getById(@PathVariable String id) {
+    public GetCarResponseDto getById(@PathVariable String id) {
         return service.getById(id);
     }
 
