@@ -31,3 +31,10 @@ services:
       - "9010:9010"
     volumes:
       - ./apigateway:/app
+  common:
+    build: ./common
+    container_name: common
+    image: api-gateway-image
+    restart: always
+    volumes:
+      - ./common:/app
