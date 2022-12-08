@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+
+  config-server:
+    build: ./config-server
+    container_name: configserver.rent
+    image: config-server-image
+    restart: always
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./config-server:/app
+
+  discovery-server:
+    build: ./discovery-server
+    container_name: discoveryserver
+    image: discovery-server-image
+    restart: always
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./discovery-server:/app
+  
+  apigateway:
+    build: ./apigateway
+    container_name: apigateway
+    image: api-gateway-image
+    restart: always
+    ports:
+      - "9010:9010"
+    volumes:
+      - ./apigateway:/app
