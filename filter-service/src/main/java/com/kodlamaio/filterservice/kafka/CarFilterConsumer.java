@@ -23,7 +23,7 @@ public class CarFilterConsumer {
     private final ModelMapperService modelMapperService;
 
     @KafkaListener(
-            topics = "${spring.kafka.topic.name}"
+            topics = "filter-created"
             , groupId = "filterCreate"
     )
     public void consume(CarCreatedEvent event) {
@@ -34,7 +34,7 @@ public class CarFilterConsumer {
     }
 
     @KafkaListener(
-            topics = "${spring.kafka.topic.name}"
+            topics = "filter-updated"
             , groupId = "filterUpdate"
     )
     public void consume(CarUpdateEvent event) {
@@ -46,7 +46,7 @@ public class CarFilterConsumer {
     }
 
     @KafkaListener(
-            topics = "${spring.kafka.topic.name}"
+            topics = "filter-brand-updated"
             , groupId = "filterUpdateBrandName"
     )
     public void consume(BrandUpdatedEvent event) {

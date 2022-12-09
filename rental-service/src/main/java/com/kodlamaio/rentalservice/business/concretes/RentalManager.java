@@ -47,6 +47,9 @@ public class RentalManager implements RentalService {
 
     @Override
     public GetRentalResponse getById(String id) {
+        checkIfRentalExistsById(id);
+        Rental rental = rentalRepository.findById(id).get();
+        GetRentalResponse response = modelMapperService.forResponse().map(rental,GetRentalResponse.class);
         return null;
     }
 
@@ -91,7 +94,8 @@ public class RentalManager implements RentalService {
 
     @Override
     public void delete(String id) {
-
+        checkIfRentalExistsById(id);
+        rentalRepository.deleteById(id);
     }
 
     private void createInvoiceProducer(Rental rental, CreatePaymentRequest paymentRequest) {

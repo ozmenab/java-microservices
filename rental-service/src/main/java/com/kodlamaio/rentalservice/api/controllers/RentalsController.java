@@ -6,6 +6,7 @@ import com.kodlamaio.rentalservice.business.requests.create.CreateRentalRequest;
 import com.kodlamaio.rentalservice.business.requests.update.UpdateRentalRequest;
 import com.kodlamaio.rentalservice.business.responses.create.CreateRentalResponse;
 import com.kodlamaio.rentalservice.business.responses.get.GetAllRentalsResponse;
+import com.kodlamaio.rentalservice.business.responses.get.GetRentalResponse;
 import com.kodlamaio.rentalservice.business.responses.update.UpdateRentalResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -38,5 +39,10 @@ public class RentalsController {
     @PutMapping("/{id}")
     public UpdateRentalResponse update(@PathVariable String id,@RequestBody UpdateRentalRequest updateRentalRequest){
         return rentalService.update(id,updateRentalRequest);
+    }
+
+    @GetMapping("/{id}")
+    public GetRentalResponse getById(@PathVariable String id){
+        return rentalService.getById(id);
     }
 }

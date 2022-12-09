@@ -1,10 +1,12 @@
 package com.kodlamaio.rentalservice.exceptions;
 
 import com.kodlamaio.common.util.exceptions.BusinessException;
-import com.kodlamaio.rentalservice.utilities.results.ApiErrorResponse;
+import com.kodlamaio.common.util.results.ErrorDataResult;
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.common.security.oauthbearer.secured.ValidateException;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,85 +27,79 @@ import java.util.List;
 public class RestResponseExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<?> handleNotFoundExceptions(BusinessException ex,
-                                                      WebRequest request) {
-
-        var response = new ApiErrorResponse<>();
-        response.setHttpStatus(HttpStatus.NOT_FOUND);
-        response.setStatusCode(HttpStatus.NOT_FOUND.value());
-
-        // response.setTimestamp(ResponseMessage.timestamp);
-        response.setPath(request.getDescription(false));
-        response.setErrors(Arrays.asList(ex.getMessage()));
-
-        log.error(response.toString());
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(response);
+    public ResponseEntity handleBusinessException(BusinessException exception) {
+        ErrorDataResult<?> result = new ErrorDataResult<>(exception.getMessage());
+        log.error(result.toString());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
     }
 
 
     @ExceptionHandler(TypeMismatchException.class)
-    protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers,
+    protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException exception, HttpHeaders headers,
                                                         HttpStatus status, WebRequest request) {
-        // return super.handleTypeMismatch(ex, headers, status, request);
-
-        var response = new ApiErrorResponse<>();
-        response.setPath(request.getDescription(false));
-        response.setErrors(Arrays.asList(ex.getMessage(), "Required Type: " + ex.getRequiredType()));
-
+        ErrorDataResult<?> result = new ErrorDataResult<>(exception.getMessage());
+        log.error(result.toString());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(response);
+                .body(result);
     }
 
     @ExceptionHandler(MissingPathVariableException.class)
-    protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers,
+    protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException exception, HttpHeaders headers,
                                                                HttpStatus status, WebRequest request) {
-        // return super.handleMissingPathVariable(ex, headers, status, request);
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body("MissingPathVariable");
+        ErrorDataResult<?> result = new ErrorDataResult<>(exception.getMessage());
+        log.error(result.toString());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(result);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception,
                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {
 
         List<String> errors = new ArrayList<>();
 
-        errors.add(String.format("Number of errors : %s", ex.getErrorCount()));
+        errors.add(String.format("Number of errors : %s", exception.getErrorCount()));
 
-        for (FieldError err : ex.getFieldErrors()) {
+        for (FieldError err : exception.getFieldErrors()) {
             errors.add(err.getField() + " : " + err.getDefaultMessage() + " Rejected Value: "
                     + err.getRejectedValue());
         }
 
-        var response = new ApiErrorResponse<>();
-        response.setPath(request.getDescription(false));
-        response.setMessage("MethodArgumentNotValid");
-        response.setErrors(errors);
+        ErrorDataResult<?> result = new ErrorDataResult<>(errors);
 
-        log.error(response.toString());
+        log.error(result.toString());
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(response);
+                .body(result);
     }
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity handleFeignException(FeignException exception) {
 
-        ApiErrorResponse response = new ApiErrorResponse<>();
-        response.setMessage(exception.getMessage());
-        response.setHttpStatus(HttpStatus.BAD_REQUEST);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        ErrorDataResult<?> result = new ErrorDataResult<>(exception.getMessage());
+        log.error(result.toString());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
     }
 
     @ExceptionHandler
     public ResponseEntity handleRuntimeEception(RuntimeException exception) {
-        ApiErrorResponse response = new ApiErrorResponse();
-        response.setMessage(exception.getMessage());
+        ErrorDataResult<?> result = new ErrorDataResult<>(exception.getMessage());
+        log.error(result.toString());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+    }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    @ExceptionHandler
+    public ResponseEntity handleValidateException(ValidateException exception) {
+        ErrorDataResult<?> result = new ErrorDataResult<>(exception.getMessage());
+        log.error(result.toString());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity handleDataIntegrityViolationExceptionException(DataIntegrityViolationException exception) {
+        ErrorDataResult<?> result = new ErrorDataResult<>(exception.getMessage());
+        log.error(result.toString());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
     }
 }

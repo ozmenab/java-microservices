@@ -27,7 +27,7 @@ public class FilterServiceProducer {
 
         Message<CarCreatedEvent> message = MessageBuilder
                 .withPayload(event)
-                .setHeader(KafkaHeaders.TOPIC, topic.name()).build();
+                .setHeader(KafkaHeaders.TOPIC, "filter-created").build();
 
         kafkaTemplate.send(message);
     }
@@ -37,7 +37,7 @@ public class FilterServiceProducer {
 
         Message<CarUpdateEvent> message = MessageBuilder
                 .withPayload(event)
-                .setHeader(KafkaHeaders.TOPIC, topic.name()).build();
+                .setHeader(KafkaHeaders.TOPIC, "filter-updated").build();
 
         kafkaTemplate.send(message);
     }
@@ -46,7 +46,7 @@ public class FilterServiceProducer {
         LOGGER.info(String.format("Brand updated event for filter-service => %s", event.toString()));
         Message<BrandUpdatedEvent> message = MessageBuilder
                 .withPayload(event)
-                .setHeader(KafkaHeaders.TOPIC, topic.name()).build();
+                .setHeader(KafkaHeaders.TOPIC, "filter-brand-updated").build();
         kafkaTemplate.send(message);
     }
 }
