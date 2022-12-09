@@ -18,7 +18,7 @@ public class RentalConsumer {
     private InvoiceService invoiceService;
 
     @KafkaListener(
-            topics = "${spring.kafka.topic.name}"
+            topics = "invoice-created"
             ,groupId = "invoiceCreated"
     )
     public void consume(InvoiceCreateEvent createdEvent){

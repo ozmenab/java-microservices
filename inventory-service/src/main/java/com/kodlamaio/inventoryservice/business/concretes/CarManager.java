@@ -1,18 +1,19 @@
 package com.kodlamaio.inventoryservice.business.concretes;
 
+
+
 import com.kodlamaio.common.dto.GetCarResponseDto;
 import com.kodlamaio.common.events.filterService.CarCreatedEvent;
 import com.kodlamaio.common.events.filterService.CarUpdateEvent;
 import com.kodlamaio.common.util.exceptions.BusinessException;
 import com.kodlamaio.common.util.mapping.ModelMapperService;
 import com.kodlamaio.inventoryservice.business.abstracts.CarService;
-import com.kodlamaio.inventoryservice.business.dto.responses.create.CreateCarResponse;
-import com.kodlamaio.inventoryservice.business.dto.responses.get.GetAllCarsResponse;
-import com.kodlamaio.inventoryservice.business.dto.responses.get.GetCarResponse;
-import com.kodlamaio.inventoryservice.business.dto.responses.update.UpdateCarResponse;
-import com.kodlamaio.inventoryservice.entities.Car;
 import com.kodlamaio.inventoryservice.business.dto.requests.create.CreateCarRequest;
 import com.kodlamaio.inventoryservice.business.dto.requests.update.UpdateCarRequest;
+import com.kodlamaio.inventoryservice.business.dto.responses.create.CreateCarResponse;
+import com.kodlamaio.inventoryservice.business.dto.responses.get.GetAllCarsResponse;
+import com.kodlamaio.inventoryservice.business.dto.responses.update.UpdateCarResponse;
+import com.kodlamaio.inventoryservice.entities.Car;
 import com.kodlamaio.inventoryservice.kafka.FilterServiceProducer;
 import com.kodlamaio.inventoryservice.repository.CarRepository;
 import lombok.AllArgsConstructor;
@@ -24,8 +25,8 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class CarManager implements CarService {
-    private final CarRepository carRepository;
-    private final ModelMapperService modelMapperService;
+    private CarRepository carRepository;
+    private ModelMapperService modelMapperService;
     private FilterServiceProducer filterServiceProducer;
 
     @Override

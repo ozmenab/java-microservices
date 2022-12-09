@@ -27,7 +27,7 @@ public class RentalConsumer {
     }
 
     @KafkaListener(
-            topics = "${spring.kafka.topic.name}"
+            topics = "rental-updated"
             ,groupId = "rentalUpdate"
     )
     public void consume(RentalUpdatedEvent rentalUpdatedEvent){

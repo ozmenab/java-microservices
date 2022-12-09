@@ -27,7 +27,7 @@ public class RentalProducer {
 
         Message<RentalCreatedEvent> message = MessageBuilder
                 .withPayload(rentalCreatedEvent)
-                .setHeader(KafkaHeaders.TOPIC, topic.name()).build();
+                .setHeader(KafkaHeaders.TOPIC, "rental-created").build();
 
         kafkaTemplate.send(message);
     }
@@ -37,7 +37,7 @@ public class RentalProducer {
 
         Message<RentalUpdatedEvent> message = MessageBuilder
                 .withPayload(rentalUpdatedEvent)
-                .setHeader(KafkaHeaders.TOPIC, topic.name()).build();
+                .setHeader(KafkaHeaders.TOPIC, "rental-updated").build();
 
         kafkaTemplate.send(message);
     }
@@ -47,7 +47,7 @@ public class RentalProducer {
 
         Message<InvoiceCreateEvent> message = MessageBuilder
                 .withPayload(invoiceCreateEvent)
-                .setHeader(KafkaHeaders.TOPIC, topic.name()).build();
+                .setHeader(KafkaHeaders.TOPIC, "invoice-created").build();
 
         kafkaTemplate.send(message);
     }
