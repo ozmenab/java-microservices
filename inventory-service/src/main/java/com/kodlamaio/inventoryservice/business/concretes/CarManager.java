@@ -4,6 +4,7 @@ package com.kodlamaio.inventoryservice.business.concretes;
 
 import com.kodlamaio.common.dto.GetCarResponseDto;
 import com.kodlamaio.common.events.filterService.CarCreatedEvent;
+import com.kodlamaio.common.events.filterService.CarDeletedEvent;
 import com.kodlamaio.common.events.filterService.CarUpdateEvent;
 import com.kodlamaio.common.util.exceptions.BusinessException;
 import com.kodlamaio.common.util.mapping.ModelMapperService;
@@ -74,6 +75,9 @@ public class CarManager implements CarService {
     @Override
     public void delete(String id) {
         checkIfCarExistsById(id);
+        CarDeletedEvent event = new CarDeletedEvent();
+        event.setCarId(id);
+        filterServiceProducer.sendMessage(event);
         carRepository.deleteById(id);
     }
 

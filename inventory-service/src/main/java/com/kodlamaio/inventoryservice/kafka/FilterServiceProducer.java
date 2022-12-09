@@ -2,6 +2,7 @@ package com.kodlamaio.inventoryservice.kafka;
 
 import com.kodlamaio.common.events.filterService.BrandUpdatedEvent;
 import com.kodlamaio.common.events.filterService.CarCreatedEvent;
+import com.kodlamaio.common.events.filterService.CarDeletedEvent;
 import com.kodlamaio.common.events.filterService.CarUpdateEvent;
 import lombok.AllArgsConstructor;
 import org.apache.kafka.clients.admin.NewTopic;
@@ -42,6 +43,15 @@ public class FilterServiceProducer {
         kafkaTemplate.send(message);
     }
 
+    public void sendMessage(CarDeletedEvent carDeletedEvent) {
+        LOGGER.info(String.format("Car deleted event => %s", carDeletedEvent.toString()));
+
+        Message<CarDeletedEvent> message = MessageBuilder
+                .withPayload(carDeletedEvent)
+                .setHeader(KafkaHeaders.TOPIC, "filter-deleted").build();
+        kafkaTemplate.send(message);
+    }
+
     public void sendMessage(BrandUpdatedEvent event) {
         LOGGER.info(String.format("Brand updated event for filter-service => %s", event.toString()));
         Message<BrandUpdatedEvent> message = MessageBuilder
@@ -49,4 +59,7 @@ public class FilterServiceProducer {
                 .setHeader(KafkaHeaders.TOPIC, "filter-brand-updated").build();
         kafkaTemplate.send(message);
     }
+
+
+
 }
