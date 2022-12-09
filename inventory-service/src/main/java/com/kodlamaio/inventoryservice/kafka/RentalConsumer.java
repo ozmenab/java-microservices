@@ -16,7 +16,7 @@ public class RentalConsumer {
     private CarService carService;
 
     @KafkaListener(
-            topics = "${spring.kafka.topic.name}"
+            topics = "rental-created"
             ,groupId = "rentalCreate"
     )
     public void consume(RentalCreatedEvent createdEvent){
@@ -32,9 +32,9 @@ public class RentalConsumer {
     )
     public void consume(RentalUpdatedEvent rentalUpdatedEvent){
         LOGGER.info(String.format("Order event received in stock service => %s", rentalUpdatedEvent.toString()));
-        LOGGER.info("Car state changed");
         carService.changeCarState(rentalUpdatedEvent.getNewCarId(),2);
         carService.changeCarState(rentalUpdatedEvent.getOldCarId(),1);
+        LOGGER.info("Cars state changed");
         // save the order event into the database
     }
 }
