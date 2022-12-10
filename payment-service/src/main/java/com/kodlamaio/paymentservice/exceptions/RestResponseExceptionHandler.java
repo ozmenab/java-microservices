@@ -1,10 +1,8 @@
-package com.kodlamaio.rentalservice.exceptions;
+package com.kodlamaio.paymentservice.exceptions;
 
 import com.kodlamaio.common.util.exceptions.BusinessException;
 import com.kodlamaio.common.util.results.ErrorDataResult;
-import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.common.security.oauthbearer.secured.ValidateException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -14,13 +12,11 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.ValidationException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestControllerAdvice
@@ -74,14 +70,7 @@ public class RestResponseExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(result);
     }
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity handleFeignException(FeignException exception) {
 
-        ErrorDataResult<?> result = new ErrorDataResult<>(exception.getMessage());
-        log.error(result.toString());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
-    }
 
     @ExceptionHandler
     public ResponseEntity handleRuntimeEception(RuntimeException exception) {
